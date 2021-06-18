@@ -22,12 +22,22 @@ class _AddTodoState extends State<AddTodo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
+        toolbarHeight: 70,
+        backgroundColor: Colors.black,
         centerTitle: true,
-        title: Text("Add todo", style: TextStyle(fontFamily: 'Montserrat')),
+        title: Text(
+          "Add new",
+          style: TextStyle(
+            color: Colors.yellow,
+            fontWeight: FontWeight.bold,
+            fontSize: 26,
+          ),
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(20),
         child: Form(
             key: widget.formkey,
             child: ListView(
@@ -48,8 +58,13 @@ class _AddTodoState extends State<AddTodo> {
                     });
                   },
                 ),
+                const SizedBox(
+                  height: 30,
+                ),
                 ElevatedButton(
-                    onPressed: submitData, child: Text('Submit Data'))
+                  onPressed: submitData,
+                  child: Text('Add'),
+                )
               ],
             )),
       ),

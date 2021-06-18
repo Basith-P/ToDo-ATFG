@@ -10,6 +10,7 @@ class TodoView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.yellow,
         child: Icon(Icons.add),
         onPressed: () {
           Navigator.of(context).push(
@@ -18,6 +19,7 @@ class TodoView extends StatelessWidget {
         },
       ),
       appBar: AppBar(
+        toolbarHeight: 70,
         backgroundColor: Colors.black,
         centerTitle: true,
         title: Text(
