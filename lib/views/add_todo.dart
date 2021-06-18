@@ -58,6 +58,14 @@ class _AddTodoState extends State<AddTodo> {
                     });
                   },
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Date'),
+                    ElevatedButton(
+                        onPressed: () {}, child: Icon(Icons.calendar_today)),
+                  ],
+                ),
                 const SizedBox(
                   height: 30,
                 ),
