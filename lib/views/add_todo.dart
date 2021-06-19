@@ -1,6 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:hivetodoapp/adapters/todo_adapter.dart';
+import 'package:todo/adapters/todo_adapter.dart';
 
 class AddTodo extends StatefulWidget {
   final formkey = GlobalKey<FormState>();
@@ -14,10 +16,18 @@ class _AddTodoState extends State<AddTodo> {
   submitData() async {
     if (widget.formkey.currentState.validate()) {
       Box<Todo> todoBox = Hive.box<Todo>('todos');
-      todoBox.add(Todo(title: title, description: description));
+      todoBox.add(
+        Todo(
+          title: title,
+          description: description,
+          date: _dateTime,
+        ),
+      );
       Navigator.of(context).pop();
     }
   }
+
+  DateTime _dateTime;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +38,7 @@ class _AddTodoState extends State<AddTodo> {
         backgroundColor: Colors.black,
         centerTitle: true,
         title: Text(
-          "Add new",
+          "Add new task",
           style: TextStyle(
             color: Colors.yellow,
             fontWeight: FontWeight.bold,
@@ -36,37 +46,71 @@ class _AddTodoState extends State<AddTodo> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Form(
-            key: widget.formkey,
-            child: ListView(
+      body: Form(
+        key: widget.formkey,
+        child: ListView(
+          padding: const EdgeInsets.all(20),
+          children: [
+            TextFormField(
+              decoration: InputDecoration(hintText: 'Add title'),
+              onChanged: (value) {
+                setState(() {
+                  title = value;
+                });
+              },
+            ),
+            TextFormField(
+              decoration: InputDecoration(hintText: 'Add description'),
+              onChanged: (value) {
+                setState(() {
+                  description = value;
+                });
+              },
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextFormField(
-                  decoration: InputDecoration(hintText: 'Add title'),
-                  onChanged: (value) {
-                    setState(() {
-                      title = value;
-                    });
-                  },
-                ),
-                TextFormField(
-                  decoration: InputDecoration(hintText: 'Add description'),
-                  onChanged: (value) {
-                    setState(() {
-                      description = value;
-                    });
-                  },
-                ),
-                const SizedBox(
-                  height: 30,
+                Text(
+                  _dateTime == null ? 'Pick a date' : _dateTime.toString(),
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 ElevatedButton(
-                  onPressed: submitData,
-                  child: Text('Add'),
-                )
+                    style: ElevatedButton.styleFrom(primary: Colors.yellow),
+                    onPressed: () {
+                      showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2020),
+                        lastDate: DateTime(2030),
+                      ).then((value) {
+                        setState(() {
+                          _dateTime = value;
+                        });
+                      });
+                    },
+                    child: Icon(
+                      Icons.date_range_outlined,
+                      color: Colors.black,
+                    )),
               ],
-            )),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(primary: Colors.yellow),
+              onPressed: submitData,
+              child: Text(
+                'Add',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.hivetodoapp">
+    package="com.example.todo">
    <application
-        android:label="hivetodoapp"
+        android:label="todo"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

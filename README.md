@@ -1,5 +1,5 @@
 ### A todo app
 
-### Gtech x Flutter kerala Bootcamp
+## Getting Started
 
 ### assignment 2
