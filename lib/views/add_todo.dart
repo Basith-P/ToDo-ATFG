@@ -14,10 +14,18 @@ class _AddTodoState extends State<AddTodo> {
   submitData() async {
     if (widget.formkey.currentState.validate()) {
       Box<Todo> todoBox = Hive.box<Todo>('todos');
-      todoBox.add(Todo(title: title, description: description));
+      todoBox.add(
+        Todo(
+          title: title,
+          description: description,
+          date: _dateTime,
+        ),
+      );
       Navigator.of(context).pop();
     }
   }
+
+  DateTime _dateTime;
 
   @override
   Widget build(BuildContext context) {
@@ -61,23 +69,34 @@ class _AddTodoState extends State<AddTodo> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Date'),
+                    Text(
+                      _dateTime == null ? 'Pick a date' : _dateTime.toString(),
+                    ),
                     ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary: Colors.yellow),
                         onPressed: () {
                           showDatePicker(
                             context: context,
                             initialDate: DateTime.now(),
                             firstDate: DateTime(2020),
                             lastDate: DateTime(2030),
-                          );
+                          ).then((value) {
+                            setState(() {
+                              _dateTime = value;
+                            });
+                          });
                         },
-                        child: Icon(Icons.calendar_today)),
+                        child: Icon(
+                          Icons.date_range_outlined,
+                          color: Colors.black,
+                        )),
                   ],
                 ),
                 const SizedBox(
                   height: 30,
                 ),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(primary: Colors.yellow),
                   onPressed: submitData,
                   child: Text('Add'),
                 )

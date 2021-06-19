@@ -50,11 +50,11 @@ class TodoView extends StatelessWidget {
                   },
                   title: Text(
                     todo.title,
-                    style: TextStyle(fontSize: 20, fontFamily: 'Montserrat'),
+                    style: TextStyle(fontSize: 20),
                   ),
                   subtitle: Text(
-                    todo.description,
-                    style: TextStyle(fontSize: 16, fontFamily: 'Montserrat'),
+                    todo.date.toString() + "\n" + todo.description,
+                    style: TextStyle(fontSize: 16),
                   ),
                 );
               });
