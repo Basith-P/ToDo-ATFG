@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:hivetodoapp/adapters/todo_adapter.dart';
+import 'package:todo/adapters/todo_adapter.dart';
 
 class AddTodo extends StatefulWidget {
   final formkey = GlobalKey<FormState>();
