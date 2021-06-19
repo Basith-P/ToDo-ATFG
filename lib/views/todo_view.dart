@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:intl/intl.dart';
 
 import 'package:todo/adapters/todo_adapter.dart';
 import 'package:todo/views/add_todo.dart';
@@ -43,25 +42,25 @@ class TodoView extends StatelessWidget {
             );
           }
           return ListView.builder(
-              itemCount: box.length,
-              itemBuilder: (context, index) {
-                Todo todo = box.getAt(index);
-                return ListTile(
-                  onLongPress: () async {
-                    await box.deleteAt(index);
-                  },
-                  title: Text(
-                    todo.title,
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  subtitle: Text(
-                    DateFormat('dd MMM yyyy').format(todo.date) +
-                        "\n" +
-                        todo.description,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                );
-              });
+            itemCount: box.length,
+            itemBuilder: (context, index) {
+              Todo todo = box.getAt(index);
+              return ListTile(
+                onLongPress: () async {
+                  await box.deleteAt(index);
+                },
+                title: Text(
+                  todo.title,
+                  style: TextStyle(fontSize: 20),
+                ),
+                subtitle: Text(
+                  // DateFormat('dd MMM yyyy').format(todo.date) +
+                  todo.date.toString() + "\n" + todo.description,
+                  style: TextStyle(fontSize: 16),
+                ),
+              );
+            },
+          );
         },
       ),
     );

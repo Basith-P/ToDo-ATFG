@@ -46,70 +46,89 @@ class _AddTodoState extends State<AddTodo> {
           ),
         ),
       ),
-      body: Form(
-        key: widget.formkey,
-        child: ListView(
-          padding: const EdgeInsets.all(20),
-          children: [
-            TextFormField(
-              decoration: InputDecoration(hintText: 'Add title'),
-              onChanged: (value) {
-                setState(() {
-                  title = value;
-                });
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(hintText: 'Add description'),
-              onChanged: (value) {
-                setState(() {
-                  description = value;
-                });
-              },
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  _dateTime == null ? 'Pick a date' : _dateTime.toString(),
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Colors.yellow),
-                    onPressed: () {
-                      showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2020),
-                        lastDate: DateTime(2030),
-                      ).then((value) {
-                        setState(() {
-                          _dateTime = value;
-                        });
-                      });
-                    },
-                    child: Icon(
-                      Icons.date_range_outlined,
-                      color: Colors.black,
-                    )),
-              ],
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: Colors.yellow),
-              onPressed: submitData,
-              child: Text(
-                'Add',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+      body: Container(
+        child: Form(
+          key: widget.formkey,
+          child: ListView(
+            padding: const EdgeInsets.all(20),
+            children: [
+              TextFormField(
+                decoration: InputDecoration(hintText: 'Add title'),
+                onChanged: (value) {
+                  setState(() {
+                    title = value;
+                  });
+                },
               ),
-            )
-          ],
+              TextFormField(
+                decoration: InputDecoration(hintText: 'Add description'),
+                onChanged: (value) {
+                  setState(() {
+                    description = value;
+                  });
+                },
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    _dateTime == null ? 'Pick a date' : _dateTime.toString(),
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(primary: Colors.yellow),
+                      onPressed: () {
+                        showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2020),
+                          lastDate: DateTime(2030),
+                        ).then((value) {
+                          setState(() {
+                            _dateTime = value;
+                          });
+                        });
+                      },
+                      child: Icon(
+                        Icons.date_range_outlined,
+                        color: Colors.black,
+                      )),
+                ],
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(primary: Colors.yellow),
+                onPressed: submitData,
+                child: Text(
+                  'Add',
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Icon(Icons.light_mode_rounded),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text('Tip: You can long press on an item to \n delete it!'),
+                ],
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              ElevatedButton(
+                onPressed: null,
+                child: Text('Connect with google calendar'),
+              )
+            ],
+          ),
         ),
       ),
     );
