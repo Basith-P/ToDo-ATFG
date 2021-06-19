@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 
 import 'package:todo/adapters/todo_adapter.dart';
 import 'package:todo/views/add_todo.dart';
@@ -54,7 +55,9 @@ class TodoView extends StatelessWidget {
                     style: TextStyle(fontSize: 20),
                   ),
                   subtitle: Text(
-                    todo.date.toString() + "\n" + todo.description,
+                    DateFormat('dd MMM yyyy').format(todo.date) +
+                        "\n" +
+                        todo.description,
                     style: TextStyle(fontSize: 16),
                   ),
                 );
