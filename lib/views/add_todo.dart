@@ -28,7 +28,7 @@ class _AddTodoState extends State<AddTodo> {
         backgroundColor: Colors.black,
         centerTitle: true,
         title: Text(
-          "Add new",
+          "Add new task",
           style: TextStyle(
             color: Colors.yellow,
             fontWeight: FontWeight.bold,
@@ -63,7 +63,15 @@ class _AddTodoState extends State<AddTodo> {
                   children: [
                     Text('Date'),
                     ElevatedButton(
-                        onPressed: () {}, child: Icon(Icons.calendar_today)),
+                        onPressed: () {
+                          showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime(2030),
+                          );
+                        },
+                        child: Icon(Icons.calendar_today)),
                   ],
                 ),
                 const SizedBox(

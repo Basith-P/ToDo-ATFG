@@ -8,6 +8,12 @@ class Todo {
   String title;
   @HiveField(1)
   String description;
+  @HiveField(3)
+  DateTime date;
 
-  Todo({this.title, this.description});
+  Todo({
+    this.title,
+    this.description,
+    this.date,
+  });
 }
