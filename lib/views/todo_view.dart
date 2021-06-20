@@ -55,7 +55,11 @@ class TodoView extends StatelessWidget {
                 ),
                 subtitle: Text(
                   // DateFormat('dd MMM yyyy').format(todo.date) +
-                  todo.date.toString() + "\n" + todo.description,
+                  todo.start.toString() +
+                      "\n" +
+                      todo.end.toString() +
+                      "\n" +
+                      todo.description,
                   style: TextStyle(fontSize: 16),
                 ),
               );

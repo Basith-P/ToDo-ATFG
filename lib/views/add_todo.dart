@@ -11,7 +11,7 @@ class AddTodo extends StatefulWidget {
 }
 
 class _AddTodoState extends State<AddTodo> {
-  String title, description;
+  String title = 'No title', description = 'No description';
 
   submitData() async {
     if (widget.formkey.currentState.validate()) {
@@ -20,14 +20,16 @@ class _AddTodoState extends State<AddTodo> {
         Todo(
           title: title,
           description: description,
-          date: _dateTime,
+          start: _start,
+          end: _end,
         ),
       );
       Navigator.of(context).pop();
     }
   }
 
-  DateTime _dateTime;
+  DateTime _start;
+  DateTime _end;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +77,37 @@ class _AddTodoState extends State<AddTodo> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    _dateTime == null ? 'Pick a date' : _dateTime.toString(),
+                    _start == null
+                        ? 'Start : '
+                        : 'Start : ' + _start.toString(),
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: Colors.yellow),
+                    onPressed: () {
+                      showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2020),
+                        lastDate: DateTime(2030),
+                      ).then((value) {
+                        setState(() {
+                          _start = value;
+                        });
+                      });
+                    },
+                    child: Icon(
+                      Icons.date_range_outlined,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    _end == null ? 'End : ' : 'End : ' + _end.toString(),
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                   ElevatedButton(
@@ -88,7 +120,7 @@ class _AddTodoState extends State<AddTodo> {
                           lastDate: DateTime(2030),
                         ).then((value) {
                           setState(() {
-                            _dateTime = value;
+                            _end = value;
                           });
                         });
                       },
