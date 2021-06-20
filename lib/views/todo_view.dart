@@ -55,8 +55,10 @@ class TodoView extends StatelessWidget {
                 ),
                 subtitle: Text(
                   // DateFormat('dd MMM yyyy').format(todo.date) +
-                  todo.start.toString() +
+                  "Start : " +
+                      todo.start.toString() +
                       "\n" +
+                      "End   : " +
                       todo.end.toString() +
                       "\n" +
                       todo.description,

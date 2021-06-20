@@ -1,7 +1,8 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+
 import 'package:todo/adapters/todo_adapter.dart';
 
 class AddTodo extends StatefulWidget {
@@ -85,12 +86,13 @@ class _AddTodoState extends State<AddTodo> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(primary: Colors.yellow),
                     onPressed: () {
-                      showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2020),
-                        lastDate: DateTime(2030),
-                      ).then((value) {
+                      DatePicker.showDateTimePicker(context,
+                              showTitleActions: true,
+                              minTime: DateTime.now(),
+                              maxTime: DateTime(2025, 12, 12),
+                              currentTime: DateTime.now(),
+                              locale: LocaleType.en)
+                          .then((value) {
                         setState(() {
                           _start = value;
                         });
@@ -113,12 +115,13 @@ class _AddTodoState extends State<AddTodo> {
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.yellow),
                       onPressed: () {
-                        showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2020),
-                          lastDate: DateTime(2030),
-                        ).then((value) {
+                        DatePicker.showDateTimePicker(context,
+                                showTitleActions: true,
+                                minTime: DateTime.now(),
+                                maxTime: DateTime(2025, 12, 12),
+                                currentTime: DateTime.now(),
+                                locale: LocaleType.en)
+                            .then((value) {
                           setState(() {
                             _end = value;
                           });
