@@ -1,4 +1,5 @@
 import 'dart:ui';
+// import 'package:googleapis/sheets/v4.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import "package:googleapis_auth/auth_io.dart";
@@ -10,6 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:todo/adapters/todo_adapter.dart';
 
 import '../CalendarClient.dart';
+import '../widgets/PickDateButton.dart';
 
 class AddTodo extends StatefulWidget {
   final formkey = GlobalKey<FormState>();
@@ -48,20 +50,7 @@ class _AddTodoState extends State<AddTodo> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        toolbarHeight: 70,
-        backgroundColor: Colors.black,
-        centerTitle: true,
-        leading: Icon(Icons.arrow_back_ios_new_rounded),
-        title: Text(
-          "Add task",
-          style: TextStyle(
-            color: Colors.yellow,
-            fontWeight: FontWeight.bold,
-            fontSize: 26,
-          ),
-        ),
-      ),
+      appBar: customAppBar(context),
       body: Container(
         child: Form(
           key: widget.formkey,
@@ -69,136 +58,177 @@ class _AddTodoState extends State<AddTodo> {
             padding: const EdgeInsets.all(20),
             children: [
               TextFormField(
-                decoration: InputDecoration(hintText: 'Add title'),
+                decoration: InputDecoration(
+                  hintText: '   Title',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal, width: 3),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
                 onChanged: (value) {
                   setState(() {
                     title = value;
                   });
                 },
               ),
+              const SizedBox(height: 10),
               TextFormField(
-                decoration: InputDecoration(hintText: 'Add description'),
+                decoration: InputDecoration(
+                  hintText: '   Description',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal, width: 1),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.teal, width: 3),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
                 onChanged: (value) {
                   setState(() {
                     description = value;
                   });
                 },
               ),
-              const SizedBox(
-                height: 15,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    _start == null
-                        ? 'Start : '
-                        : 'Start : ' + DateFormat.yMMMd().format(_start),
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      backgroundColor: Colors.white12,
+              const SizedBox(height: 10),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 6),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  border: Border.all(width: 1, color: Colors.teal),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(width: 5),
+                    Text(
+                      _start == null
+                          ? 'Start : '
+                          : 'Start : \n' +
+                              DateFormat("h:mm a, dd MMM yyyy").format(_start),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.yellow,
-                      shape: StadiumBorder(),
-                    ),
-                    onPressed: () {
-                      DatePicker.showDateTimePicker(context,
-                              showTitleActions: true,
-                              minTime: DateTime.now(),
-                              maxTime: DateTime.now().add(Duration(days: 364)),
-                              currentTime: DateTime.now(),
-                              locale: LocaleType.en)
-                          .then((value) {
-                        setState(() {
-                          _start = value;
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.teal,
+                        shape: StadiumBorder(),
+                      ),
+                      onPressed: () {
+                        DatePicker.showDateTimePicker(context,
+                                showTitleActions: true,
+                                minTime: DateTime.now(),
+                                maxTime:
+                                    DateTime.now().add(Duration(days: 364)),
+                                currentTime: DateTime.now(),
+                                locale: LocaleType.en)
+                            .then((value) {
+                          setState(() {
+                            _start = value;
+                          });
                         });
-                      });
-                    },
-                    child: PickDateButton(),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    _end == null
-                        ? 'End : '
-                        : 'End : \n' +
-                            DateFormat("h:mm a, dd.MM.yyyy ").format(_end),
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.yellow,
-                      shape: StadiumBorder(),
+                      },
+                      child: PickDateButton(),
                     ),
-                    onPressed: () {
-                      DatePicker.showDateTimePicker(context,
-                              showTitleActions: true,
-                              minTime: DateTime.now(),
-                              maxTime: DateTime.now().add(Duration(days: 365)),
-                              currentTime:
-                                  DateTime.now().add(Duration(hours: 1)),
-                              locale: LocaleType.en)
-                          .then((value) {
-                        setState(() {
-                          _end = value;
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 6),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  border: Border.all(width: 1, color: Colors.teal),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(width: 5),
+                    Text(
+                      _end == null
+                          ? 'End : '
+                          : 'End : \n' +
+                              DateFormat("h:mm a, dd MMM yyyy").format(_end),
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.teal,
+                        shape: StadiumBorder(),
+                      ),
+                      onPressed: () {
+                        DatePicker.showDateTimePicker(context,
+                                showTitleActions: true,
+                                minTime: DateTime.now(),
+                                maxTime:
+                                    DateTime.now().add(Duration(days: 365)),
+                                currentTime:
+                                    DateTime.now().add(Duration(hours: 1)),
+                                locale: LocaleType.en)
+                            .then((value) {
+                          setState(() {
+                            _end = value;
+                          });
                         });
-                      });
-                    },
-                    child: PickDateButton(),
-                  ),
-                ],
+                      },
+                      child: PickDateButton(),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 10),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(primary: Colors.yellow),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.teal,
+                  shape: StadiumBorder(),
+                  padding: EdgeInsets.all(10),
+                ),
                 onPressed: submitData,
                 child: Text(
                   'Add',
                   style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                    color: Colors.black,
+                    fontSize: 20,
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
-              Text(' Tip: You can long press on a task to delete it!'),
+              Text(
+                ' Tip: You can long press on a task to delete it!',
+                style: TextStyle(color: Colors.white70),
+              ),
             ],
           ),
         ),
       ),
     );
   }
-}
 
-class PickDateButton extends StatelessWidget {
-  const PickDateButton({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(
-          Icons.date_range_outlined,
-          color: Colors.black,
+  AppBar customAppBar(BuildContext context) {
+    return AppBar(
+      toolbarHeight: 70,
+      backgroundColor: Colors.black,
+      centerTitle: true,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios_new_rounded),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
+      title: Text(
+        "Add task",
+        style: TextStyle(
+          color: Colors.teal,
+          fontWeight: FontWeight.bold,
+          fontSize: 26,
         ),
-        const SizedBox(width: 5),
-        Text(
-          'Pick a date',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        )
-      ],
+      ),
     );
   }
 }

@@ -11,7 +11,7 @@ class TodoView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.yellow,
+        backgroundColor: Colors.teal,
         child: Icon(Icons.add),
         onPressed: () {
           Navigator.of(context).push(
@@ -26,7 +26,7 @@ class TodoView extends StatelessWidget {
         title: Text(
           "ToDo",
           style: TextStyle(
-            color: Colors.yellow,
+            color: Colors.teal,
             fontWeight: FontWeight.bold,
             fontSize: 26,
           ),
