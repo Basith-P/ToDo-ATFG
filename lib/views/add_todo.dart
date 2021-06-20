@@ -1,7 +1,8 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+
 import 'package:todo/adapters/todo_adapter.dart';
 
 class AddTodo extends StatefulWidget {
@@ -11,7 +12,7 @@ class AddTodo extends StatefulWidget {
 }
 
 class _AddTodoState extends State<AddTodo> {
-  String title, description;
+  String title = 'No title', description = 'No description';
 
   submitData() async {
     if (widget.formkey.currentState.validate()) {
@@ -20,14 +21,16 @@ class _AddTodoState extends State<AddTodo> {
         Todo(
           title: title,
           description: description,
-          date: _dateTime,
+          start: _start,
+          end: _end,
         ),
       );
       Navigator.of(context).pop();
     }
   }
 
-  DateTime _dateTime;
+  DateTime _start;
+  DateTime _end;
 
   @override
   Widget build(BuildContext context) {
@@ -75,20 +78,52 @@ class _AddTodoState extends State<AddTodo> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    _dateTime == null ? 'Pick a date' : _dateTime.toString(),
+                    _start == null
+                        ? 'Start : '
+                        : 'Start : ' + _start.toString(),
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: Colors.yellow),
+                    onPressed: () {
+                      DatePicker.showDateTimePicker(context,
+                              showTitleActions: true,
+                              minTime: DateTime.now(),
+                              maxTime: DateTime(2025, 12, 12),
+                              currentTime: DateTime.now(),
+                              locale: LocaleType.en)
+                          .then((value) {
+                        setState(() {
+                          _start = value;
+                        });
+                      });
+                    },
+                    child: Icon(
+                      Icons.date_range_outlined,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    _end == null ? 'End : ' : 'End : ' + _end.toString(),
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.yellow),
                       onPressed: () {
-                        showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2020),
-                          lastDate: DateTime(2030),
-                        ).then((value) {
+                        DatePicker.showDateTimePicker(context,
+                                showTitleActions: true,
+                                minTime: DateTime.now(),
+                                maxTime: DateTime(2025, 12, 12),
+                                currentTime: DateTime.now(),
+                                locale: LocaleType.en)
+                            .then((value) {
                           setState(() {
-                            _dateTime = value;
+                            _end = value;
                           });
                         });
                       },

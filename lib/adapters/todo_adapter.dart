@@ -9,11 +9,14 @@ class Todo {
   @HiveField(1)
   String description;
   @HiveField(3)
-  DateTime date;
+  DateTime start;
+  @HiveField(4)
+  DateTime end;
 
   Todo({
     this.title,
     this.description,
-    this.date,
+    this.start,
+    this.end,
   });
 }
