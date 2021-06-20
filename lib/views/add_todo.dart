@@ -38,7 +38,7 @@ class _AddTodoState extends State<AddTodo> {
         backgroundColor: Colors.black,
         centerTitle: true,
         title: Text(
-          "Add new task",
+          "Add task",
           style: TextStyle(
             color: Colors.yellow,
             fontWeight: FontWeight.bold,
