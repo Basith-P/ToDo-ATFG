@@ -1,9 +1,14 @@
 import 'dart:ui';
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import "package:googleapis_auth/auth_io.dart";
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+// import 'package:googleapis/calendar/v3.dart';
 
 import 'package:todo/adapters/todo_adapter.dart';
+
+import '../CalendarClient.dart';
 
 class AddTodo extends StatefulWidget {
   final formkey = GlobalKey<FormState>();
@@ -12,7 +17,11 @@ class AddTodo extends StatefulWidget {
 }
 
 class _AddTodoState extends State<AddTodo> {
-  String title = 'No title', description = 'No description';
+  CalendarClient calendarClient = CalendarClient();
+  DateTime _start = DateTime.now();
+  DateTime _end = DateTime.now().add(Duration(hours: 1));
+  String title = 'No title';
+  String description = 'No description';
 
   submitData() async {
     if (widget.formkey.currentState.validate()) {
@@ -26,11 +35,13 @@ class _AddTodoState extends State<AddTodo> {
         ),
       );
       Navigator.of(context).pop();
+      calendarClient.insert(
+        title,
+        _start,
+        _end,
+      );
     }
   }
-
-  DateTime _start;
-  DateTime _end;
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +100,7 @@ class _AddTodoState extends State<AddTodo> {
                       DatePicker.showDateTimePicker(context,
                               showTitleActions: true,
                               minTime: DateTime.now(),
-                              maxTime: DateTime(2025, 12, 12),
+                              maxTime: DateTime.now().add(Duration(days: 364)),
                               currentTime: DateTime.now(),
                               locale: LocaleType.en)
                           .then((value) {
@@ -118,8 +129,10 @@ class _AddTodoState extends State<AddTodo> {
                         DatePicker.showDateTimePicker(context,
                                 showTitleActions: true,
                                 minTime: DateTime.now(),
-                                maxTime: DateTime(2025, 12, 12),
-                                currentTime: DateTime.now(),
+                                maxTime:
+                                    DateTime.now().add(Duration(days: 365)),
+                                currentTime:
+                                    DateTime.now().add(Duration(hours: 1)),
                                 locale: LocaleType.en)
                             .then((value) {
                           setState(() {
@@ -146,22 +159,7 @@ class _AddTodoState extends State<AddTodo> {
                 ),
               ),
               const SizedBox(height: 20),
-              Row(
-                children: [
-                  Icon(Icons.light_mode_rounded),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Text('Tip: You can long press on an item to \n delete it!'),
-                ],
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              ElevatedButton(
-                onPressed: null,
-                child: Text('Connect with google calendar'),
-              )
+              Text(' Tip: You can long press on an item to delete it!'),
             ],
           ),
         ),

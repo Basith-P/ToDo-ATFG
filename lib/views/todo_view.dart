@@ -32,43 +32,50 @@ class TodoView extends StatelessWidget {
           ),
         ),
       ),
-      body: ValueListenableBuilder(
-        valueListenable: Hive.box<Todo>('todos').listenable(),
-        builder: (context, Box<Todo> box, _) {
-          if (box.values.isEmpty) {
-            return Center(
-              child: Text("No data available!",
-                  style: TextStyle(fontFamily: 'Montserrat')),
-            );
-          }
-          return ListView.builder(
-            itemCount: box.length,
-            itemBuilder: (context, index) {
-              Todo todo = box.getAt(index);
-              return ListTile(
-                onLongPress: () async {
-                  await box.deleteAt(index);
-                },
-                title: Text(
-                  todo.title,
-                  style: TextStyle(fontSize: 20),
-                ),
-                subtitle: Text(
-                  // DateFormat('dd MMM yyyy').format(todo.date) +
-                  "Start : " +
-                      todo.start.toString() +
-                      "\n" +
-                      "End   : " +
-                      todo.end.toString() +
-                      "\n" +
-                      todo.description,
-                  style: TextStyle(fontSize: 16),
-                ),
-              );
-            },
+      body: ValueListenbleBuilder(),
+    );
+  }
+}
+
+class ValueListenbleBuilder extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+      valueListenable: Hive.box<Todo>('todos').listenable(),
+      builder: (context, Box<Todo> box, _) {
+        if (box.values.isEmpty) {
+          return Center(
+            child: Text("No data available!",
+                style: TextStyle(fontFamily: 'Montserrat')),
           );
-        },
-      ),
+        }
+        return ListView.builder(
+          itemCount: box.length,
+          itemBuilder: (context, index) {
+            Todo todo = box.getAt(index);
+            return ListTile(
+              onLongPress: () async {
+                await box.deleteAt(index);
+              },
+              title: Text(
+                todo.title,
+                style: TextStyle(fontSize: 20),
+              ),
+              subtitle: Text(
+                // DateFormat('dd MMM yyyy').format(todo.date) +
+                "Start : " +
+                    todo.start.toString() +
+                    "\n" +
+                    "End   : " +
+                    todo.end.toString() +
+                    "\n" +
+                    todo.description,
+                style: TextStyle(fontSize: 16),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
