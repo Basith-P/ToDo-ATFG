@@ -1,5 +1,5 @@
 ### A todo app
 
-## Getting Started
+### Flutter Bootcamp by ATFG &times; FlutterKeral
 
 ### assignment 2
