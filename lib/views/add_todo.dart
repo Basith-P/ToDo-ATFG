@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import "package:googleapis_auth/auth_io.dart";
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 // import 'package:googleapis/calendar/v3.dart';
 
@@ -51,6 +52,7 @@ class _AddTodoState extends State<AddTodo> {
         toolbarHeight: 70,
         backgroundColor: Colors.black,
         centerTitle: true,
+        leading: Icon(Icons.arrow_back_ios_new_rounded),
         title: Text(
           "Add task",
           style: TextStyle(
@@ -91,11 +93,18 @@ class _AddTodoState extends State<AddTodo> {
                   Text(
                     _start == null
                         ? 'Start : '
-                        : 'Start : ' + _start.toString(),
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                        : 'Start : ' + DateFormat.yMMMd().format(_start),
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      backgroundColor: Colors.white12,
+                    ),
                   ),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Colors.yellow),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.yellow,
+                      shape: StadiumBorder(),
+                    ),
                     onPressed: () {
                       DatePicker.showDateTimePicker(context,
                               showTitleActions: true,
@@ -109,10 +118,7 @@ class _AddTodoState extends State<AddTodo> {
                         });
                       });
                     },
-                    child: Icon(
-                      Icons.date_range_outlined,
-                      color: Colors.black,
-                    ),
+                    child: PickDateButton(),
                   ),
                 ],
               ),
@@ -120,30 +126,33 @@ class _AddTodoState extends State<AddTodo> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    _end == null ? 'End : ' : 'End : ' + _end.toString(),
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    _end == null
+                        ? 'End : '
+                        : 'End : \n' +
+                            DateFormat("h:mm a, dd.MM.yyyy ").format(_end),
+                    style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
                   ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: Colors.yellow),
-                      onPressed: () {
-                        DatePicker.showDateTimePicker(context,
-                                showTitleActions: true,
-                                minTime: DateTime.now(),
-                                maxTime:
-                                    DateTime.now().add(Duration(days: 365)),
-                                currentTime:
-                                    DateTime.now().add(Duration(hours: 1)),
-                                locale: LocaleType.en)
-                            .then((value) {
-                          setState(() {
-                            _end = value;
-                          });
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.yellow,
+                      shape: StadiumBorder(),
+                    ),
+                    onPressed: () {
+                      DatePicker.showDateTimePicker(context,
+                              showTitleActions: true,
+                              minTime: DateTime.now(),
+                              maxTime: DateTime.now().add(Duration(days: 365)),
+                              currentTime:
+                                  DateTime.now().add(Duration(hours: 1)),
+                              locale: LocaleType.en)
+                          .then((value) {
+                        setState(() {
+                          _end = value;
                         });
-                      },
-                      child: Icon(
-                        Icons.date_range_outlined,
-                        color: Colors.black,
-                      )),
+                      });
+                    },
+                    child: PickDateButton(),
+                  ),
                 ],
               ),
               const SizedBox(
@@ -159,11 +168,37 @@ class _AddTodoState extends State<AddTodo> {
                 ),
               ),
               const SizedBox(height: 20),
-              Text(' Tip: You can long press on an item to delete it!'),
+              Text(' Tip: You can long press on a task to delete it!'),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class PickDateButton extends StatelessWidget {
+  const PickDateButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(
+          Icons.date_range_outlined,
+          color: Colors.black,
+        ),
+        const SizedBox(width: 5),
+        Text(
+          'Pick a date',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        )
+      ],
     );
   }
 }
