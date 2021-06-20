@@ -165,11 +165,10 @@ class _AddTodoState extends State<AddTodo> {
                       onPressed: () {
                         DatePicker.showDateTimePicker(context,
                                 showTitleActions: true,
-                                minTime: DateTime.now(),
+                                minTime: _start.add(Duration(minutes: 1)),
                                 maxTime:
                                     DateTime.now().add(Duration(days: 365)),
-                                currentTime:
-                                    DateTime.now().add(Duration(hours: 1)),
+                                currentTime: _start.add(Duration(hours: 1)),
                                 locale: LocaleType.en)
                             .then((value) {
                           setState(() {
